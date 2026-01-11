@@ -3,8 +3,8 @@
 @theme {
     /* Colors */
     --color-primary: #007bff;
-    --color-background-light: #f0f4f8;
-    --color-background-dark: #0a0e14;
+    --color-background-light: #000000;
+    --color-background-dark: #000000;
     --color-text-light: #1a202c;
     --color-text-dark: #e2e8f0;
     --color-accent-blue: #00f0ff;
@@ -42,11 +42,11 @@
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: #0a0e14;
+    background: #000000;
 }
 ::-webkit-scrollbar-thumb {
     background: #007bff;
-    border: 2px solid #0a0e14;
+    border: 2px solid #000000;
 }
 ::-webkit-scrollbar-thumb:hover {
     background: #0056b3;
