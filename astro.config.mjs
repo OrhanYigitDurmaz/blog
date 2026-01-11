@@ -9,11 +9,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     server: {
       // allow the specific host from the error message
-      allowedHosts: [
-        "*",
-        "orhandurmaz.dev",
-        "concerned-mailto-delays-professionals.trycloudflare.com",
-      ],
+      allowedHosts: ["*", "orhandurmaz.dev"],
     },
   },
 });
