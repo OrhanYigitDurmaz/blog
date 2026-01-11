@@ -7,5 +7,13 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      // allow the specific host from the error message
+      allowedHosts: [
+        "*",
+        "orhandurmaz.dev",
+        "concerned-mailto-delays-professionals.trycloudflare.com",
+      ],
+    },
   },
 });

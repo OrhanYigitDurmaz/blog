@@ -1,6 +1,24 @@
 ---
+import "../styles/global.css";
 const { title } = Astro.props;
-import "../styles/global.css"; // <--- ADD THIS LINE
+const currentPath = Astro.url.pathname;
+
+// Helper function to determine if a link is active
+// Returns active classes if the current path matches the link, otherwise inactive
+const getLinkClass = (path: string): string => {
+    const baseClass = "whitespace-nowrap transition-all border-b-2";
+    const activeClass = "border-primary text-primary font-medium";
+    const inactiveClass =
+        "border-transparent hover:border-gray-400 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white";
+
+    // Strict match for home, startsWith for others (to handle /blog/post-1)
+    if (path === "/" && currentPath === "/")
+        return `${baseClass} ${activeClass}`;
+    if (path !== "/" && currentPath.startsWith(path))
+        return `${baseClass} ${activeClass}`;
+
+    return `${baseClass} ${inactiveClass}`;
+};
 ---
 
 <!doctype html>
@@ -9,7 +27,6 @@ import "../styles/global.css"; // <--- ADD THIS LINE
         <meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <title>{title}</title>
-
         <link
             href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
@@ -20,10 +37,105 @@ import "../styles/global.css"; // <--- ADD THIS LINE
         />
     </head>
     <body
-        class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark font-body min-h-screen transition-colors duration-300 antialiased p-6 md:p-12 relative"
+        class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark font-body min-h-screen transition-colors duration-300 antialiased p-6 md:p-12 relative flex flex-col"
     >
-        <div class="max-w-4xl mx-auto z-10 relative">
+        <div class="max-w-4xl mx-auto w-full z-10 relative grow">
+            <header
+                class="flex flex-wrap items-center justify-between gap-6 mb-16 border-b border-gray-300 dark:border-gray-800 pb-8"
+            >
+                <div
+                    class="mb-6 md:mb-0 w-full md:w-auto text-center md:text-left shrink-0"
+                >
+                    <div
+                        class="flex items-center justify-center md:justify-start gap-2 mb-2 group cursor-pointer"
+                        onclick="window.location.href='/'"
+                    >
+                        <span
+                            class="material-icons text-primary text-4xl group-hover:shadow-neon transition-all duration-300"
+                            >terminal</span
+                        >
+                        <h1
+                            class="text-3xl font-bold tracking-tighter wrap-break-words"
+                        >
+                            <span class="text-primary">orhandurmaz</span>.dev
+                        </h1>
+                    </div>
+                </div>
+
+                <div
+                    class="flex flex-col md:flex-row items-center gap-4 md:gap-8 w-full md:w-auto"
+                >
+                    <nav
+                        class="flex flex-wrap justify-center md:justify-start gap-3 md:gap-6 items-center w-full md:w-auto"
+                        aria-label="Main navigation"
+                    >
+                        <a class={getLinkClass("/")} href="/">~/home</a>
+                        <a class={getLinkClass("/manifesto")} href="#"
+                            >./manifesto</a
+                        >
+                        <a class={getLinkClass("/projects")} href="#"
+                            >./projects</a
+                        >
+                        <a class={getLinkClass("/blog")} href="/blog">./blog</a>
+                        <a class={getLinkClass("/contact")} href="#"
+                            >./contact</a
+                        >
+                        <a
+                            class="flex items-center gap-1 border-b-2 border-transparent hover:border-gray-400 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white transition-all text-gray-500 dark:text-gray-400 whitespace-nowrap"
+                            href="#"
+                        >
+                            ./resume <span class="material-icons text-sm"
+                                >download</span
+                            >
+                        </a>
+                    </nav>
+
+                    <div
+                        class="flex items-center gap-4 justify-center md:justify-start mt-3 md:mt-0"
+                    >
+                        <button
+                            class="border-b border-dashed border-gray-400 dark:border-gray-600 hover:text-primary transition-colors text-xs uppercase tracking-wider"
+                        >
+                            [EN]
+                        </button>
+                        <button
+                            id="theme-toggle"
+                            class="text-gray-500 hover:text-primary transition-colors flex items-center"
+                        >
+                            <span class="material-icons text-sm"
+                                >brightness_6</span
+                            >
+                        </button>
+                    </div>
+                </div>
+            </header>
+
             <slot />
+
+            <footer
+                class="mt-24 pt-8 border-t border-gray-300 dark:border-gray-800 text-xs md:text-sm text-gray-500 dark:text-gray-500 flex flex-col md:flex-row justify-between items-center gap-4"
+            >
+                <div>
+                    © 2026 orhandurmaz.dev | <span class="text-primary"
+                        >MIT License</span
+                    >
+                </div>
+                <div class="flex gap-4">
+                    <a
+                        class="hover:text-primary transition-colors"
+                        href="https://github.com/OrhanYigitDurmaz">GitHub</a
+                    >
+                    <a class="hover:text-primary transition-colors" href="#"
+                        >Twitter</a
+                    >
+                    <a
+                        class="hover:text-primary transition-colors"
+                        href="https://www.linkedin.com/in/orhanyigitdurmaz"
+                        >LinkedIn</a
+                    >
+                </div>
+                <div class="font-mono text-xs opacity-50">v3.1.0-alpha</div>
+            </footer>
         </div>
 
         <div
@@ -40,26 +152,109 @@ import "../styles/global.css"; // <--- ADD THIS LINE
         </div>
 
         <script is:inline>
-            const theme = (() => {
-                if (
-                    typeof localStorage !== "undefined" &&
-                    localStorage.getItem("theme")
-                ) {
-                    return localStorage.getItem("theme");
+            (function () {
+                // Safe localStorage helpers (guard against private mode / errors)
+                function safeLocalStorageGet(key) {
+                    try {
+                        if (typeof localStorage === "undefined") return null;
+                        return localStorage.getItem(key);
+                    } catch (e) {
+                        return null;
+                    }
                 }
-                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-                    return "dark";
+
+                function safeLocalStorageSet(key, value) {
+                    try {
+                        if (typeof localStorage === "undefined") return;
+                        localStorage.setItem(key, value);
+                    } catch (e) {
+                        // ignore
+                    }
                 }
-                return "light";
+
+                // Apply theme by toggling the `dark` class on the root element.
+                function applyTheme(theme) {
+                    if (theme === "dark") {
+                        document.documentElement.classList.add("dark");
+                    } else {
+                        document.documentElement.classList.remove("dark");
+                    }
+                }
+
+                // Initialize theme: prefer stored preference, then system preference, then light.
+                var stored = safeLocalStorageGet("theme");
+                var prefersDark = false;
+                try {
+                    prefersDark =
+                        typeof window !== "undefined" &&
+                        window.matchMedia &&
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .matches;
+                } catch (e) {
+                    prefersDark = false;
+                }
+
+                var initialTheme = stored || (prefersDark ? "dark" : "light");
+                applyTheme(initialTheme);
+                safeLocalStorageSet("theme", initialTheme);
+
+                // Keep toggle UI in sync (aria-pressed + icon)
+                function updateToggleButtonState() {
+                    var btn = document.getElementById("theme-toggle");
+                    if (!btn) return;
+                    var icon = btn.querySelector(".material-icons");
+                    var isDark =
+                        document.documentElement.classList.contains("dark");
+                    btn.setAttribute("aria-pressed", String(isDark));
+                    // show an appropriate icon (action icon)
+                    if (icon) {
+                        // when dark, show light_mode (sun) icon to indicate switching to light
+                        icon.innerText = isDark ? "light_mode" : "dark_mode";
+                    }
+                }
+
+                // Centralized toggle
+                function toggleTheme() {
+                    var isDark =
+                        document.documentElement.classList.toggle("dark");
+                    safeLocalStorageSet("theme", isDark ? "dark" : "light");
+                    updateToggleButtonState();
+                }
+
+                // Initialize button state once DOM is ready-ish
+                // (this script runs inline after markup so elements should exist)
+                updateToggleButtonState();
+
+                // Use event delegation so the handler works regardless of timing or markup nesting.
+                document.addEventListener("click", function (e) {
+                    var target = e.target;
+                    if (!(target instanceof Element)) return;
+                    var toggleEl =
+                        typeof target.closest === "function"
+                            ? target.closest("#theme-toggle")
+                            : null;
+                    if (!toggleEl && target.id === "theme-toggle")
+                        toggleEl = target;
+                    if (toggleEl) {
+                        // Prevent default for button/link behavior
+                        if (e.preventDefault) e.preventDefault();
+                        toggleTheme();
+                    }
+                });
+
+                // Support keyboard activation (Enter / Space) when the toggle is focused
+                document.addEventListener("keydown", function (e) {
+                    var active = document.activeElement;
+                    if (!active) return;
+                    if (
+                        active.id === "theme-toggle" &&
+                        (e.key === "Enter" || e.key === " ")
+                    ) {
+                        e.preventDefault();
+                        toggleTheme();
+                    }
+                });
             })();
-
-            if (theme === "dark") {
-                document.documentElement.classList.add("dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-            }
-
-            window.localStorage.setItem("theme", theme);
         </script>
     </body>
 </html>

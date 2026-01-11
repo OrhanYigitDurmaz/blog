@@ -1,24 +1,51 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
+/* 1. DEFINE THE VARIABLES & SWITCHING LOGIC */
+@layer base {
+    :root {
+        /* Light Mode Defaults (Extracted Hex Codes) */
+        --bg-main: #f0f4f8; /* "background-light" */
+        --text-main: #1a202c; /* "text-light" */
+        --color-primary-val: #007bff; /* "primary" */
+        --scrollbar-track: #0a0e14;
+    }
+
+    /* Dark Mode Overrides */
+    .dark {
+        --bg-main: #0a0e14; /* "background-dark" */
+        --text-main: #e2e8f0; /* "text-dark" */
+        /* Primary usually stays the same, but you can change it here if needed */
+    }
+
+    /* Apply defaults to the body */
+    body {
+        @apply antialiased bg-background text-text transition-colors duration-300;
+    }
+}
+
+/* 2. CONFIGURE THE THEME */
 @theme {
-    /* Colors */
+    /* Dynamic Colors (Map to variables above) */
+    --color-background: var(--bg-main);
+    --color-text: var(--text-main);
+
+    /* Static Colors */
     --color-primary: #007bff;
-    --color-background-light: #000000;
-    --color-background-dark: #000000;
-    --color-text-light: #1a202c;
-    --color-text-dark: #e2e8f0;
     --color-accent-blue: #00f0ff;
+    --color-scrollbar-hover: #0056b3;
 
     /* Fonts */
     --font-display: "Fira Code", monospace;
     --font-body: "Fira Code", monospace;
 
-    /* Box Shadows */
+    /* Shadows */
     --shadow-neon:
         0 0 5px rgba(0, 123, 255, 0.5), 0 0 20px rgba(0, 123, 255, 0.3);
 
     /* Animations */
     --animate-blink: blink 1s step-end infinite;
+
     @keyframes blink {
         0%,
         100% {
@@ -30,35 +57,31 @@
     }
 }
 
-/* Custom Utilities / Global Styles */
-@layer base {
-    body {
-        @apply antialiased;
-    }
-}
+/* 3. CUSTOM UTILITIES & GLOBAL STYLES */
 
-/* Scrollbar Styling */
+/* Scrollbar Styling (Uses the dark background track by default) */
 ::-webkit-scrollbar {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: #000000;
+    background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-    background: #007bff;
-    border: 2px solid #000000;
+    background: var(--color-primary);
+    border: 2px solid var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #0056b3;
+    background: var(--color-scrollbar-hover);
 }
 
 /* Cursor Blink Effect */
 .cursor-blink::after {
     content: "_";
-    animation: var(--animate-blink);
+    animation: blink 1s step-end infinite;
 }
 
+/* Text Selection */
 ::selection {
-    background-color: #007bff;
+    background-color: var(--color-primary);
     color: white;
 }
