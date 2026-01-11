@@ -1,0 +1,270 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout title="orhandurmaz.dev">
+    <header
+        class="flex flex-col md:flex-row justify-between items-center mb-16 border-b border-gray-300 dark:border-gray-800 pb-8"
+    >
+        <div class="mb-6 md:mb-0 w-full md:w-auto text-center md:text-left">
+            <div
+                class="flex items-center justify-center md:justify-start gap-2 mb-2 group cursor-pointer"
+            >
+                <span
+                    class="material-icons text-primary text-4xl group-hover:shadow-neon transition-all duration-300"
+                    >terminal</span
+                >
+                <h1 class="text-3xl font-bold tracking-tighter">
+                    <span class="text-primary">orhandurmaz</span>.dev
+                </h1>
+            </div>
+        </div>
+
+        <div
+            class="flex flex-col md:flex-row items-center gap-6 md:gap-8 text-sm md:text-base w-full md:w-auto"
+        >
+            <nav
+                class="flex flex-wrap md:flex-nowrap justify-center gap-4 md:gap-6 items-center"
+            >
+                <a
+                    class="border-b-2 border-primary text-primary font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap"
+                    href="#"
+                >
+                    ~/home
+                </a>
+                <a
+                    class="border-b-2 border-transparent hover:border-gray-400 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white transition-all whitespace-nowrap"
+                    href="#"
+                >
+                    ./manifesto
+                </a>
+                <a
+                    class="border-b-2 border-transparent hover:border-gray-400 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white transition-all whitespace-nowrap"
+                    href="#"
+                >
+                    ./projects
+                </a>
+                <a
+                    class="border-b-2 border-transparent hover:border-gray-400 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white transition-all whitespace-nowrap"
+                    href="#"
+                >
+                    ./contact
+                </a>
+                <a
+                    class="flex items-center gap-1 border-b-2 border-transparent hover:border-gray-400 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white transition-all text-gray-500 dark:text-gray-400 whitespace-nowrap"
+                    href="#"
+                >
+                    ./resume <span class="material-icons text-sm">download</span
+                    >
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button
+                    class="border-b border-dashed border-gray-400 dark:border-gray-600 hover:text-primary transition-colors text-xs uppercase tracking-wider"
+                >
+                    [EN]
+                </button>
+                <button
+                    id="theme-toggle"
+                    class="text-gray-500 hover:text-primary transition-colors flex items-center"
+                >
+                    <span class="material-icons text-sm">brightness_6</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="space-y-16">
+        <section class="mb-12">
+            <h2 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+                Hi, I am <span class="text-primary">Orhan</span>.
+            </h2>
+            <p
+                class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl"
+            >
+                <span class="text-primary font-bold">&gt;</span> Full Stack Developer
+                building accessible, pixel-perfect, and performant web experiences.
+            </p>
+        </section>
+
+        <article>
+            <div
+                class="inline-block bg-primary text-white px-3 py-1 mb-6 font-bold text-sm shadow-md"
+            >
+                ## Who am I?
+            </div>
+            <div class="max-w-none text-gray-800 dark:text-gray-300">
+                <p class="text-lg leading-relaxed mb-4">
+                    I'm a software engineer based in the digital ether. My
+                    journey started with a simple HTML file and has evolved into
+                    architecting complex distributed systems.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    I believe in open source, clean code, and the idea that
+                    technology should empower people. When I'm not coding, you
+                    can find me tinkering with <span
+                        class="text-primary font-medium">IoT devices</span
+                    > or exploring the latest in generative AI.
+                </p>
+            </div>
+        </article>
+
+        <article>
+            <div
+                class="inline-block bg-primary text-white px-3 py-1 mb-6 font-bold text-sm shadow-md"
+            >
+                ## What I do
+            </div>
+            <div class="max-w-none space-y-4">
+                <p
+                    class="leading-relaxed text-gray-700 dark:text-gray-300 mb-6"
+                >
+                    I leverage a modern tech stack to bring ideas to life. My
+                    toolkit includes but is not limited to:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div
+                        class="p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900/50"
+                    >
+                        <h3 class="text-primary font-bold mb-2">Frontend</h3>
+                        <ul class="list-none space-y-2 text-sm">
+                            <li>
+                                <span class="text-gray-400 mr-2">&gt;</span> React
+                                / Next.js
+                            </li>
+                            <li>
+                                <span class="text-gray-400 mr-2">&gt;</span> Vue.js
+                                / Nuxt
+                            </li>
+                            <li>
+                                <span class="text-gray-400 mr-2">&gt;</span> Tailwind
+                                CSS
+                            </li>
+                            <li>
+                                <span class="text-gray-400 mr-2">&gt;</span> WebGL
+                                / Three.js
+                            </li>
+                        </ul>
+                    </div>
+                    <div
+                        class="p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900/50"
+                    >
+                        <h3 class="text-primary font-bold mb-2">
+                            Backend & Ops
+                        </h3>
+                        <ul class="list-none space-y-2 text-sm">
+                            <li>
+                                <span class="text-gray-400 mr-2">&gt;</span> Node.js
+                                / TypeScript
+                            </li>
+                            <li>
+                                <span class="text-gray-400 mr-2">&gt;</span> Python
+                                / Django
+                            </li>
+                            <li>
+                                <span class="text-gray-400 mr-2">&gt;</span> Docker
+                                / Kubernetes
+                            </li>
+                            <li>
+                                <span class="text-gray-400 mr-2">&gt;</span> PostgreSQL
+                                / Redis
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div
+                class="inline-block bg-primary text-white px-3 py-1 mb-6 font-bold text-sm shadow-md"
+            >
+                ## Current Projects
+            </div>
+            <div class="max-w-none">
+                <div class="space-y-8">
+                    <div class="group">
+                        <h3
+                            class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors cursor-pointer flex items-center gap-2"
+                        >
+                            Project_Nebula <span
+                                class="text-xs border border-primary text-primary px-1 py-0.5 rounded-sm"
+                                >Active</span
+                            >
+                        </h3>
+                        <p
+                            class="leading-relaxed text-gray-700 dark:text-gray-300 mb-2"
+                        >
+                            A minimalist dashboard for monitoring server metrics
+                            in real-time. Built with Go and WebSockets.
+                        </p>
+                        <a
+                            class="text-sm text-gray-500 hover:text-primary underline decoration-dotted"
+                            href="#">View Repository</a
+                        >
+                    </div>
+                    <div class="group">
+                        <h3
+                            class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors cursor-pointer flex items-center gap-2"
+                        >
+                            CLI-ify <span
+                                class="text-xs border border-gray-500 text-gray-500 px-1 py-0.5 rounded-sm"
+                                >Maintenance</span
+                            >
+                        </h3>
+                        <p
+                            class="leading-relaxed text-gray-700 dark:text-gray-300 mb-2"
+                        >
+                            An open-source node package to turn any JSON data
+                            source into a navigable CLI interface instantly.
+                        </p>
+                        <a
+                            class="text-sm text-gray-500 hover:text-primary underline decoration-dotted"
+                            href="#">View Repository</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="border-t border-dashed border-gray-700 pt-8 mt-12">
+                <p class="text-primary cursor-blink font-mono text-sm">
+                    orhan@archlinux:~$ echo "Let's build something together."
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <footer
+        class="mt-24 pt-8 border-t border-gray-300 dark:border-gray-800 text-xs md:text-sm text-gray-500 dark:text-gray-500 flex flex-col md:flex-row justify-between items-center gap-4"
+    >
+        <div>
+            © 2026 orhandurmaz.dev | <span class="text-primary"
+                >MIT License</span
+            >
+        </div>
+        <div class="flex gap-4">
+            <a class="hover:text-primary transition-colors" href="#">GitHub</a>
+            <a class="hover:text-primary transition-colors" href="#">Twitter</a>
+            <a class="hover:text-primary transition-colors" href="#">LinkedIn</a
+            >
+        </div>
+        <div class="font-mono text-xs opacity-50">v3.1.0-alpha</div>
+    </footer>
+
+    <script>
+        const handleToggleClick = () => {
+            const element = document.documentElement;
+            element.classList.toggle("dark");
+
+            const isDark = element.classList.contains("dark");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        };
+
+        document
+            .getElementById("theme-toggle")
+            ?.addEventListener("click", handleToggleClick);
+    </script>
+</MainLayout>

@@ -1,0 +1,65 @@
+---
+const { title } = Astro.props;
+import "../styles/global.css"; // <--- ADD THIS LINE
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>{title}</title>
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+        />
+    </head>
+    <body
+        class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark font-body min-h-screen transition-colors duration-300 antialiased p-6 md:p-12 relative"
+    >
+        <div class="max-w-4xl mx-auto z-10 relative">
+            <slot />
+        </div>
+
+        <div
+            class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden"
+        >
+            <div
+                class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary opacity-[0.03] dark:opacity-[0.05] rounded-full blur-3xl"
+            >
+            </div>
+            <div
+                class="absolute bottom-[-10%] left-[-5%] w-80 h-80 bg-blue-400 opacity-[0.03] dark:opacity-[0.05] rounded-full blur-3xl"
+            >
+            </div>
+        </div>
+
+        <script is:inline>
+            const theme = (() => {
+                if (
+                    typeof localStorage !== "undefined" &&
+                    localStorage.getItem("theme")
+                ) {
+                    return localStorage.getItem("theme");
+                }
+                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    return "dark";
+                }
+                return "light";
+            })();
+
+            if (theme === "dark") {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+
+            window.localStorage.setItem("theme", theme);
+        </script>
+    </body>
+</html>

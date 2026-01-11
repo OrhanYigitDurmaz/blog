@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+    /* Colors */
+    --color-primary: #007bff;
+    --color-background-light: #f0f4f8;
+    --color-background-dark: #0a0e14;
+    --color-text-light: #1a202c;
+    --color-text-dark: #e2e8f0;
+    --color-accent-blue: #00f0ff;
+
+    /* Fonts */
+    --font-display: "Fira Code", monospace;
+    --font-body: "Fira Code", monospace;
+
+    /* Box Shadows */
+    --shadow-neon:
+        0 0 5px rgba(0, 123, 255, 0.5), 0 0 20px rgba(0, 123, 255, 0.3);
+
+    /* Animations */
+    --animate-blink: blink 1s step-end infinite;
+    @keyframes blink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+    }
+}
+
+/* Custom Utilities / Global Styles */
+@layer base {
+    body {
+        @apply antialiased;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #0a0e14;
+}
+::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border: 2px solid #0a0e14;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+}
+
+/* Cursor Blink Effect */
+.cursor-blink::after {
+    content: "_";
+    animation: var(--animate-blink);
+}
+
+::selection {
+    background-color: #007bff;
+    color: white;
+}
