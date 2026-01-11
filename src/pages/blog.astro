@@ -1,0 +1,257 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import MainLayout from "../layouts/MainLayout.astro";
+
+// 1. Fetch all blog posts (typed)
+const posts = (await getCollection("blog")) as CollectionEntry<"blog">[];
+posts.sort(
+    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+        b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+// 2. Extract Unique Tags and Count them
+const allTags = posts.flatMap(
+    (post: CollectionEntry<"blog">) => post.data.tags as string[],
+);
+
+const tagCounts = allTags.reduce(
+    (acc: Record<string, number>, tag: string) => {
+        acc[tag] = (acc[tag] || 0) + 1;
+        return acc;
+    },
+    {} as Record<string, number>,
+);
+
+const uniqueTags = Object.keys(tagCounts).sort();
+
+// Helper to format date
+const formatDate = (date: Date): string => {
+    return date.toISOString().split("T")[0];
+};
+---
+
+<MainLayout title="Personal Dev Blog - Articles">
+    <section class="mb-12">
+        <h2 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+            articles.log
+        </h2>
+        <p class="text-xl md:text-2xl leading-relaxed max-w-2xl opacity-90">
+            <span class="text-primary font-bold">&gt;</span> A reverse chronological
+            feed of thoughts, tutorials, and deep dives.
+        </p>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 items-start">
+        <aside class="lg:col-span-1 lg:sticky lg:top-24 space-y-8">
+            <div
+                class="p-6 border-2 border-dashed border-gray-400 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30"
+            >
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+                    <span class="material-icons text-primary text-sm"
+                        >filter_list</span
+                    >
+                    FILTERS
+                </h3>
+
+                <div class="space-y-1 flex flex-col items-start w-full">
+                    <button
+                        class="filter-btn group w-full text-left text-sm py-1 transition-colors flex justify-between items-center text-primary font-bold"
+                        data-filter="all"
+                        id="btn-all"
+                    >
+                        <span>[ * ] All Posts</span>
+                        <span class="text-xs opacity-50 font-mono"
+                            >({posts.length})</span
+                        >
+                    </button>
+
+                    <div
+                        class="w-full border-t border-gray-300 dark:border-gray-700 my-2 opacity-50"
+                    >
+                    </div>
+
+                    {
+                        uniqueTags.map((tag: string) => (
+                            <button
+                                class="filter-btn group w-full text-left text-sm py-1 transition-colors flex justify-between items-center text-text opacity-70 hover:opacity-100 hover:text-primary"
+                                data-filter={tag}
+                            >
+                                <span class="group-hover:translate-x-1 transition-transform">
+                                    #{tag}
+                                </span>
+                                <span class="text-xs opacity-50 font-mono">
+                                    ({tagCounts[tag]})
+                                </span>
+                            </button>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div class="hidden lg:block text-xs font-mono opacity-50">
+                <p class="mb-2">// popular_tags</p>
+                <div class="flex flex-wrap gap-2">
+                    {
+                        uniqueTags
+                            .slice(0, 5)
+                            .map((tag: string) => <span>{tag}</span>)
+                    }
+                </div>
+            </div>
+        </aside>
+
+        <div class="lg:col-span-3 space-y-16" id="post-feed">
+            {
+                posts.map((post) => (
+                    <article
+                        class="blog-post space-y-3 transition-all duration-300"
+                        data-tags={JSON.stringify(post.data.tags)}
+                    >
+                        <div class="flex items-center gap-3 text-sm font-mono opacity-60">
+                            <span>// {formatDate(post.data.pubDate)}</span>
+                            <span class="border-l border-gray-500 pl-3">
+                                {post.data.author}
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-primary hover:underline underline-offset-4 cursor-pointer">
+                            <a href={`/blog/${post.slug}`}>
+                                ./articles/{post.slug}
+                            </a>
+                        </h3>
+
+                        <p class="text-lg leading-relaxed opacity-90 max-w-3xl">
+                            <span class="text-primary font-bold text-sm uppercase tracking-wide mr-2">
+                                Abstract:
+                            </span>
+                            {post.data.description}
+                        </p>
+
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            {post.data.tags.map((tag: string) => (
+                                <span class="text-xs font-mono border border-gray-500/30 px-2 py-1 rounded text-primary">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+
+                        <hr class="border-t border-dashed border-gray-500/30 mt-8" />
+                    </article>
+                ))
+            }
+
+            <article
+                id="no-results"
+                class="hidden text-center py-12 border-2 border-dashed border-red-900/30 p-8"
+            >
+                <p class="text-xl font-mono">
+                    <span class="text-red-500">Error 404:</span> No articles found
+                    for this filter.
+                </p>
+                <button
+                    onclick="document.querySelector('[data-filter=all]').click()"
+                    class="mt-4 text-primary hover:underline font-mono"
+                >
+                    &lt; reset_filters /&gt;
+                </button>
+            </article>
+
+            <article>
+                <div
+                    class="border-t border-dashed border-gray-500/30 pt-8 mt-12"
+                >
+                    <p class="text-primary cursor-blink font-mono text-sm">
+                        alex@dev-log:~$ cat ./articles/* | sort -r | head -n <span
+                            id="visible-count">{posts.length}</span
+                        >
+                    </p>
+                </div>
+            </article>
+        </div>
+    </div>
+</MainLayout>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const buttons =
+            document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+        const posts = document.querySelectorAll<HTMLElement>(".blog-post");
+        const noResults = document.getElementById("no-results");
+        const countDisplay = document.getElementById("visible-count");
+
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const filter = btn.getAttribute("data-filter") || "all";
+
+                // 1. Reset all buttons to inactive state
+                buttons.forEach((b) => {
+                    b.classList.remove(
+                        "text-primary",
+                        "font-bold",
+                        "opacity-100",
+                    );
+                    b.classList.add("text-text", "opacity-70");
+
+                    // Reset text icon
+                    const span = b.querySelector(
+                        "span:first-child",
+                    ) as HTMLElement;
+                    if (span) {
+                        const rawText = span.innerText
+                            .replace("[ * ] ", "")
+                            .replace("[ x ] ", "")
+                            .replace("#", "");
+                        // Add hash back if it's not "All Posts"
+                        span.innerText = rawText.includes("All Posts")
+                            ? rawText
+                            : `#${rawText}`;
+                    }
+                });
+
+                // 2. Set Active Button
+                btn.classList.remove("text-text", "opacity-70");
+                btn.classList.add("text-primary", "font-bold", "opacity-100");
+
+                // Update text icon
+                const activeSpan = btn.querySelector(
+                    "span:first-child",
+                ) as HTMLElement;
+                if (activeSpan) {
+                    const currentText = activeSpan.innerText.replace("#", "");
+                    activeSpan.innerText =
+                        filter === "all"
+                            ? `[ * ] ${currentText}`
+                            : `[ x ] #${currentText}`;
+                }
+
+                // 3. Filter Posts
+                let visibleCount = 0;
+                posts.forEach((post) => {
+                    const tagsJson = post.getAttribute("data-tags");
+                    const postTags: string[] = tagsJson
+                        ? JSON.parse(tagsJson)
+                        : [];
+
+                    if (filter === "all" || postTags.includes(filter)) {
+                        post.classList.remove("hidden");
+                        // Small animation reset
+                        post.style.opacity = "0";
+                        setTimeout(() => (post.style.opacity = "1"), 50);
+                        visibleCount++;
+                    } else {
+                        post.classList.add("hidden");
+                    }
+                });
+
+                // 4. Update UI State
+                if (noResults) {
+                    noResults.classList.toggle("hidden", visibleCount > 0);
+                }
+                if (countDisplay) {
+                    countDisplay.innerText = String(visibleCount);
+                }
+            });
+        });
+    });
+</script>
