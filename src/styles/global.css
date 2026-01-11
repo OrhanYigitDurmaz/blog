@@ -85,3 +85,9 @@
     background-color: var(--color-primary);
     color: white;
 }
+
+/* Fix for Firefox Flash of Transition */
+.disable-transitions,
+.disable-transitions * {
+    transition: none !important;
+}

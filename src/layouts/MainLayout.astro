@@ -153,7 +153,7 @@ const getLinkClass = (path: string): string => {
 
         <script is:inline>
             (function () {
-                // Safe localStorage helpers (guard against private mode / errors)
+                // Safe localStorage helpers
                 function safeLocalStorageGet(key) {
                     try {
                         if (typeof localStorage === "undefined") return null;
@@ -172,16 +172,28 @@ const getLinkClass = (path: string): string => {
                     }
                 }
 
-                // Apply theme by toggling the `dark` class on the root element.
+                // 1. MODIFIED: Apply theme with transition suppression
                 function applyTheme(theme) {
+                    // Disable transitions so Firefox doesn't "flash" the change
+                    document.documentElement.classList.add(
+                        "disable-transitions",
+                    );
+
                     if (theme === "dark") {
                         document.documentElement.classList.add("dark");
                     } else {
                         document.documentElement.classList.remove("dark");
                     }
+
+                    // Re-enable transitions immediately after the DOM update
+                    window.setTimeout(function () {
+                        document.documentElement.classList.remove(
+                            "disable-transitions",
+                        );
+                    }, 0);
                 }
 
-                // Initialize theme: prefer stored preference, then system preference, then light.
+                // Initialize theme
                 var stored = safeLocalStorageGet("theme");
                 var prefersDark = false;
                 try {
@@ -198,7 +210,7 @@ const getLinkClass = (path: string): string => {
                 applyTheme(initialTheme);
                 safeLocalStorageSet("theme", initialTheme);
 
-                // Keep toggle UI in sync (aria-pressed + icon)
+                // Update UI state
                 function updateToggleButtonState() {
                     var btn = document.getElementById("theme-toggle");
                     if (!btn) return;
@@ -206,14 +218,13 @@ const getLinkClass = (path: string): string => {
                     var isDark =
                         document.documentElement.classList.contains("dark");
                     btn.setAttribute("aria-pressed", String(isDark));
-                    // show an appropriate icon (action icon)
+
                     if (icon) {
-                        // when dark, show light_mode (sun) icon to indicate switching to light
                         icon.innerText = isDark ? "light_mode" : "dark_mode";
                     }
                 }
 
-                // Centralized toggle
+                // Centralized toggle (We DO want animation here, so we use classList.toggle directly)
                 function toggleTheme() {
                     var isDark =
                         document.documentElement.classList.toggle("dark");
@@ -221,11 +232,10 @@ const getLinkClass = (path: string): string => {
                     updateToggleButtonState();
                 }
 
-                // Initialize button state once DOM is ready-ish
-                // (this script runs inline after markup so elements should exist)
+                // Initialize button state
                 updateToggleButtonState();
 
-                // Use event delegation so the handler works regardless of timing or markup nesting.
+                // Event Listeners
                 document.addEventListener("click", function (e) {
                     var target = e.target;
                     if (!(target instanceof Element)) return;
@@ -236,13 +246,11 @@ const getLinkClass = (path: string): string => {
                     if (!toggleEl && target.id === "theme-toggle")
                         toggleEl = target;
                     if (toggleEl) {
-                        // Prevent default for button/link behavior
                         if (e.preventDefault) e.preventDefault();
                         toggleTheme();
                     }
                 });
 
-                // Support keyboard activation (Enter / Space) when the toggle is focused
                 document.addEventListener("keydown", function (e) {
                     var active = document.activeElement;
                     if (!active) return;
