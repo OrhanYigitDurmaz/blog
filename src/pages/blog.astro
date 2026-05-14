@@ -161,10 +161,10 @@ const formatDate = (date: Date): string => {
                 <div
                     class="border-t border-dashed border-gray-500/30 pt-8 mt-12"
                 >
-                    <p class="text-primary cursor-blink font-mono text-sm">
+                    <p class="text-primary font-mono text-sm">
                         orhan@archlinux:~$ cat ./articles/* | sort -r | head -n <span
                             id="visible-count">{posts.length}</span
-                        >
+                        ><span class="cursor-blink">_</span>
                     </p>
                 </div>
             </article>

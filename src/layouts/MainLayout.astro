@@ -4,20 +4,15 @@ const { title } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 // Helper function to determine if a link is active
-// Returns active classes if the current path matches the link, otherwise inactive
 const getLinkClass = (path: string): string => {
-    const baseClass = "whitespace-nowrap transition-all border-b-2";
-    const activeClass = "border-primary text-primary font-medium";
+    const activeClass = "text-primary border-b-2 border-primary pb-0.5";
     const inactiveClass =
-        "border-transparent hover:border-gray-400 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white";
+        "text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors";
 
-    // Strict match for home, startsWith for others (to handle /blog/post-1)
-    if (path === "/" && currentPath === "/")
-        return `${baseClass} ${activeClass}`;
-    if (path !== "/" && currentPath.startsWith(path))
-        return `${baseClass} ${activeClass}`;
+    if (path === "/" && currentPath === "/") return activeClass;
+    if (path !== "/" && currentPath.startsWith(path)) return activeClass;
 
-    return `${baseClass} ${inactiveClass}`;
+    return inactiveClass;
 };
 ---
 
@@ -28,8 +23,14 @@ const getLinkClass = (path: string): string => {
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <title>{title}</title>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link href="https://fonts.googleapis.com" rel="preconnect" />
         <link
-            href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
+            crossorigin=""
+            href="https://fonts.gstatic.com"
+            rel="preconnect"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap"
             rel="stylesheet"
         />
         <link
@@ -38,119 +39,82 @@ const getLinkClass = (path: string): string => {
         />
     </head>
     <body
-        class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark font-body min-h-screen transition-colors duration-300 antialiased p-6 md:p-12 relative flex flex-col"
+        class="font-mono bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300 min-h-screen flex flex-col selection:bg-primary selection:text-white"
     >
-        <div class="max-w-4xl mx-auto w-full z-10 relative grow">
-            <header
-                class="flex flex-wrap items-center justify-between gap-6 mb-16 border-b border-gray-300 dark:border-gray-800 pb-8"
+        <header class="w-full max-w-5xl mx-auto px-6 py-8">
+            <div
+                class="flex flex-col md:flex-row md:items-center justify-between gap-6"
             >
-                <div
-                    class="mb-6 md:mb-0 w-full md:w-auto text-center md:text-left shrink-0"
+                <a
+                    class="group flex items-center gap-2 text-xl font-bold tracking-tight no-underline"
+                    href="/"
                 >
-                    <div
-                        class="flex items-center justify-center md:justify-start gap-2 mb-2 group cursor-pointer"
-                        onclick="window.location.href='/'"
+                    <span
+                        class="material-icons text-primary group-hover:rotate-12 transition-transform"
+                        >terminal</span
                     >
+                    <span class="text-primary">orhandurmaz</span><span
+                        class="text-text-light dark:text-white">.dev</span
+                    >
+                </a>
+                <nav
+                    class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-medium"
+                >
+                    <a class={getLinkClass("/")} href="/">~/home</a>
+                    <a class={getLinkClass("/manifesto")} href="#"
+                        >./manifesto</a
+                    >
+                    <a class={getLinkClass("/projects")} href="#">./projects</a>
+                    <a class={getLinkClass("/blog")} href="/blog">./blog</a>
+                    <a class={getLinkClass("/privacy-policy")} href="/privacy-policy">./privacy</a>
+                    <a class={getLinkClass("/terms")} href="/terms">./terms</a>
+                    <a class={getLinkClass("/contact")} href="#">./contact</a>
+                    <a
+                        class="flex items-center gap-1 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors group"
+                        href="#"
+                    >
+                        ./resume
                         <span
-                            class="material-icons text-primary text-4xl group-hover:shadow-neon transition-all duration-300"
-                            >terminal</span
+                            class="material-icons text-sm group-hover:translate-y-0.5 transition-transform"
+                            >download</span
                         >
-                        <h1
-                            class="text-3xl font-bold tracking-tighter wrap-break-words"
-                        >
-                            <span class="text-primary">orhandurmaz</span>.dev
-                        </h1>
-                    </div>
-                </div>
-
-                <div
-                    class="flex flex-col md:flex-row items-center gap-4 md:gap-8 w-full md:w-auto"
-                >
-                    <nav
-                        class="flex flex-wrap justify-center md:justify-start gap-3 md:gap-6 items-center w-full md:w-auto"
-                        aria-label="Main navigation"
-                    >
-                        <a class={getLinkClass("/")} href="/">~/home</a>
-                        <a class={getLinkClass("/manifesto")} href="#"
-                            >./manifesto</a
-                        >
-                        <a class={getLinkClass("/projects")} href="#"
-                            >./projects</a
-                        >
-                        <a class={getLinkClass("/blog")} href="/blog">./blog</a>
-                        <a class={getLinkClass("/contact")} href="#"
-                            >./contact</a
-                        >
-                        <a
-                            class="flex items-center gap-1 border-b-2 border-transparent hover:border-gray-400 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white transition-all text-gray-500 dark:text-gray-400 whitespace-nowrap"
-                            href="#"
-                        >
-                            ./resume <span class="material-icons text-sm"
-                                >download</span
-                            >
-                        </a>
-                    </nav>
-
+                    </a>
                     <div
-                        class="flex items-center gap-4 justify-center md:justify-start mt-3 md:mt-0"
+                        class="w-px h-4 bg-gray-300 dark:bg-gray-700 hidden sm:block"
                     >
-                        <button
-                            class="border-b border-dashed border-gray-400 dark:border-gray-600 hover:text-primary transition-colors text-xs uppercase tracking-wider"
-                        >
-                            [EN]
-                        </button>
-                        <button
-                            id="theme-toggle"
-                            class="text-gray-500 hover:text-primary transition-colors flex items-center"
-                        >
-                            <span class="material-icons text-sm"
-                                >brightness_6</span
-                            >
-                        </button>
                     </div>
-                </div>
-            </header>
+                    <button
+                        class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary text-xs tracking-wider font-bold"
+                    >
+                        [EN]
+                    </button>
+                    <button
+                        id="theme-toggle"
+                        class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
+                    >
+                        <span class="material-icons text-sm">light_mode</span>
+                    </button>
+                </nav>
+            </div>
+            <div
+                class="h-px w-full bg-gray-200 dark:bg-gray-800 mt-6 md:mt-8 opacity-50"
+            >
+            </div>
+        </header>
 
+        <main class="flex-grow w-full max-w-4xl mx-auto px-6 py-12 md:py-20">
             <slot />
+        </main>
 
-            <footer
-                class="mt-24 pt-8 border-t border-gray-300 dark:border-gray-800 text-xs md:text-sm text-gray-500 dark:text-gray-500 flex flex-col md:flex-row justify-between items-center gap-4"
-            >
-                <div>
-                    © 2026 orhandurmaz.dev | <span class="text-primary"
-                        >MIT License</span
-                    >
-                </div>
-                <div class="flex gap-4">
-                    <a
-                        class="hover:text-primary transition-colors"
-                        href="https://github.com/OrhanYigitDurmaz">GitHub</a
-                    >
-                    <a class="hover:text-primary transition-colors" href="#"
-                        >Twitter</a
-                    >
-                    <a
-                        class="hover:text-primary transition-colors"
-                        href="https://www.linkedin.com/in/orhanyigitdurmaz"
-                        >LinkedIn</a
-                    >
-                </div>
-                <div class="font-mono text-xs opacity-50">v3.1.0-alpha</div>
-            </footer>
-        </div>
-
-        <div
-            class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden"
+        <footer
+            class="w-full text-center py-8 text-xs text-gray-400 dark:text-gray-600"
         >
-            <div
-                class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary opacity-[0.03] dark:opacity-[0.05] rounded-full blur-3xl"
-            >
-            </div>
-            <div
-                class="absolute bottom-[-10%] left-[-5%] w-80 h-80 bg-blue-400 opacity-[0.03] dark:opacity-[0.05] rounded-full blur-3xl"
-            >
-            </div>
-        </div>
+            <p>
+                © 2024 Orhan Durmaz. Crafted with <span class="text-primary"
+                    >&lt;3</span
+                > and code.
+            </p>
+        </footer>
 
         <script is:inline>
             (function () {

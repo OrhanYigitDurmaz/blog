@@ -2,172 +2,101 @@
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
-<MainLayout title="orhandurmaz.dev">
-    <main class="space-y-20">
-        <section>
-            <h2 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
-                Hi, I am <span class="text-primary">Orhan</span>.
-            </h2>
-            <p class="text-xl md:text-2xl leading-relaxed max-w-2xl opacity-90">
-                <span class="text-primary font-bold">&gt;</span> Full Stack Developer
-                building accessible, pixel-perfect, and performant web experiences.
+<MainLayout title="Orhan Durmaz - Minimalist Portfolio">
+    <section class="mb-24 animate-fade-in-up">
+        <h1
+            class="text-4xl md:text-6xl font-bold mb-6 text-text-light dark:text-white"
+        >
+            Hi, I am <span class="text-primary">Orhan</span><span
+                class="text-primary cursor-blink">.</span
+            >
+        </h1>
+        <p
+            class="text-lg md:text-xl leading-relaxed text-gray-600 dark:text-gray-300 max-w-2xl"
+        >
+            <span class="text-primary font-bold mr-2">&gt;</span>
+            Full Stack Developer building accessible, pixel-perfect, and performant
+            web experiences.
+        </p>
+    </section>
+
+    <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6 flex items-center group">
+            <span
+                class="text-primary mr-2 group-hover:translate-x-1 transition-transform"
+                >##</span
+            >
+            <span class="text-text-light dark:text-white">Who am I?</span>
+        </h2>
+        <div
+            class="space-y-6 text-gray-600 dark:text-gray-400 leading-relaxed text-base md:text-lg"
+        >
+            <p>
+                I'm a software engineer based in the digital ether. My journey
+                started with a simple HTML file and has evolved into
+                architecting complex distributed systems.
             </p>
-        </section>
-
-        <article>
-            <div
-                class="inline-block bg-primary text-white px-3 py-1 mb-6 font-bold text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]"
-            >
-                ## Who am I?
-            </div>
-            <div
-                class="max-w-none text-lg leading-relaxed space-y-4 opacity-90"
-            >
-                <p>
-                    I'm a software engineer based in the digital ether. My
-                    journey started with a simple HTML file and has evolved into
-                    architecting complex distributed systems.
-                </p>
-                <p>
-                    I believe in open source, clean code, and the idea that
-                    technology should empower people. When I'm not coding, you
-                    can find me tinkering with <span
-                        class="text-primary font-bold">IoT devices</span
-                    >
-                    or exploring the latest in generative AI.
-                </p>
-            </div>
-        </article>
-
-        <article>
-            <div
-                class="inline-block bg-primary text-white px-3 py-1 mb-6 font-bold text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]"
-            >
-                ## What I do
-            </div>
-
-            <p class="leading-relaxed mb-8 text-lg opacity-90">
-                I leverage a modern tech stack to bring ideas to life. My
-                toolkit includes:
+            <p>
+                I believe in open source, clean code, and the idea that
+                technology should empower people. When I'm not coding, you can
+                find me tinkering with <span class="text-primary font-bold"
+                    >IoT devices</span
+                > or exploring the latest in generative AI.
             </p>
+        </div>
+    </section>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div
-                    class="p-6 border-2 border-dashed border-gray-400 dark:border-gray-700 hover:border-primary transition-colors"
-                >
-                    <h3 class="text-primary font-bold mb-4 text-xl">
-                        Frontend
-                    </h3>
-                    <ul class="space-y-2 font-mono text-sm">
-                        <li>
-                            <span class="text-primary mr-2">&gt;</span> React / Next.js
-                        </li>
-                        <li>
-                            <span class="text-primary mr-2">&gt;</span> Vue.js / Nuxt
-                        </li>
-                        <li>
-                            <span class="text-primary mr-2">&gt;</span> Tailwind CSS
-                        </li>
-                        <li>
-                            <span class="text-primary mr-2">&gt;</span> WebGL / Three.js
-                        </li>
-                    </ul>
-                </div>
-
-                <div
-                    class="p-6 border-2 border-dashed border-gray-400 dark:border-gray-700 hover:border-primary transition-colors"
-                >
-                    <h3 class="text-primary font-bold mb-4 text-xl">
-                        Backend & Ops
-                    </h3>
-                    <ul class="space-y-2 font-mono text-sm">
-                        <li>
-                            <span class="text-primary mr-2">&gt;</span> Node.js /
-                            TypeScript
-                        </li>
-                        <li>
-                            <span class="text-primary mr-2">&gt;</span> Python / Django
-                        </li>
-                        <li>
-                            <span class="text-primary mr-2">&gt;</span> Docker / Kubernetes
-                        </li>
-                        <li>
-                            <span class="text-primary mr-2">&gt;</span> PostgreSQL
-                            / Redis
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </article>
-
-        <article>
-            <div
-                class="inline-block bg-primary text-white px-3 py-1 mb-6 font-bold text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]"
+    <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6 flex items-center group">
+            <span
+                class="text-primary mr-2 group-hover:translate-x-1 transition-transform"
+                >##</span
             >
-                ## Current Projects
-            </div>
-
-            <div class="space-y-10">
-                <div class="group">
-                    <h3
-                        class="text-xl font-bold mb-2 group-hover:text-primary transition-colors cursor-pointer flex items-center gap-3"
-                    >
-                        <a
-                            href="#"
-                            class="border-b-2 border-transparent group-hover:border-primary"
-                            >Project_Nebula</a
-                        >
-                        <span
-                            class="text-xs border border-primary text-primary px-2 py-0.5 rounded-none font-mono"
-                            >Active</span
-                        >
-                    </h3>
-                    <p class="leading-relaxed mb-2 opacity-90">
-                        A minimalist dashboard for monitoring server metrics in
-                        real-time. Built with Go and WebSockets.
-                    </p>
-                    <a
-                        href="#"
-                        class="text-sm font-mono text-gray-500 hover:text-primary transition-colors"
-                    >
-                        [View Repository]
-                    </a>
-                </div>
-
-                <div class="group">
-                    <h3
-                        class="text-xl font-bold mb-2 group-hover:text-primary transition-colors cursor-pointer flex items-center gap-3"
-                    >
-                        <a
-                            href="#"
-                            class="border-b-2 border-transparent group-hover:border-primary"
-                            >CLI-ify</a
-                        >
-                        <span
-                            class="text-xs border border-gray-500 text-gray-500 px-2 py-0.5 rounded-none font-mono"
-                            >Maintenance</span
-                        >
-                    </h3>
-                    <p class="leading-relaxed mb-2 opacity-90">
-                        An open-source node package to turn any JSON data source
-                        into a navigable CLI interface instantly.
-                    </p>
-                    <a
-                        href="#"
-                        class="text-sm font-mono text-gray-500 hover:text-primary transition-colors"
-                    >
-                        [View Repository]
-                    </a>
-                </div>
-            </div>
-        </article>
-
-        <article class="pt-12">
-            <div class="border-t border-dashed border-gray-500/50 pt-6">
-                <p class="text-primary cursor-blink font-mono text-sm">
-                    orhan@archlinux:~$ echo "Let's build something together."
+            <span class="text-text-light dark:text-white">What I do</span>
+        </h2>
+        <div
+            class="text-gray-600 dark:text-gray-400 leading-relaxed text-base md:text-lg mb-8"
+        >
+            <p>
+                I leverage a modern tech stack to bring ideas to life. I focus
+                on creating intuitive interfaces backed by robust logic.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div
+                class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-primary dark:hover:border-primary transition-colors group"
+            >
+                <h3 class="text-primary font-bold mb-2 flex items-center">
+                    <span class="material-icons text-sm mr-2">code</span> Frontend
+                </h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    React, Vue, Tailwind CSS, TypeScript. Crafting responsive
+                    and interactive UIs.
                 </p>
             </div>
-        </article>
-    </main>
+            <div
+                class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-primary dark:hover:border-primary transition-colors group"
+            >
+                <h3 class="text-primary font-bold mb-2 flex items-center">
+                    <span class="material-icons text-sm mr-2">dns</span> Backend
+                </h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Node.js, Go, Python, PostgreSQL. Building scalable APIs and
+                    services.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-24 pt-12 border-t border-gray-200 dark:border-gray-800">
+        <p class="text-gray-500 dark:text-gray-400 mb-4">
+            <span class="text-primary">&gt;</span> Ready to start a project?
+        </p>
+        <a
+            class="inline-flex items-center text-xl font-bold text-text-light dark:text-white hover:text-primary dark:hover:text-primary transition-colors decoration-2 hover:underline underline-offset-4"
+            href="mailto:hello@orhandurmaz.dev"
+        >
+            Get in touch <span class="material-icons ml-2">arrow_forward</span>
+        </a>
+    </section>
 </MainLayout>
