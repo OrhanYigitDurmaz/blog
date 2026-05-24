@@ -1,0 +1,241 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout title="./joke - Bottom Text Encoder">
+  <section class="mb-8">
+    <div class="font-mono text-sm text-gray-500 mb-2">
+      <span class="text-green-600 dark:text-green-500">➜</span>
+      <span class="text-blue-600 dark:text-blue-500">~</span>
+      <span class="text-gray-400">/</span>
+      <span class="text-gray-900 dark:text-white">./joke</span>
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-text-light dark:text-white">
+      bottom<span class="text-primary">_text</span> encoder
+    </h1>
+    <p class="text-lg leading-relaxed opacity-80 max-w-2xl">
+      <span class="text-primary font-bold mr-2">&gt;</span>
+      A tool that converts strings into text resembling "bottom spam" — base 9
+      encoding via home row keys, prefixed with <code class="text-primary">sk</code>.
+    </p>
+  </section>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="space-y-4">
+      <div class="flex items-center gap-2">
+        <span class="material-icons text-primary text-sm">edit</span>
+        <h2 class="text-lg font-bold text-text-light dark:text-white">plaintext</h2>
+        <span class="text-xs font-mono text-gray-400">// input</span>
+      </div>
+      <textarea
+        id="plain-input"
+        rows="8"
+        placeholder="Type something..."
+        class="w-full p-4 font-mono text-sm bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg resize-y focus:outline-none focus:border-primary transition-colors text-text-light dark:text-text-dark placeholder:text-gray-400"
+      ></textarea>
+      <div class="flex gap-3">
+        <button
+          id="btn-encode"
+          class="px-4 py-2 text-sm font-mono font-bold bg-primary text-white rounded hover:opacity-90 transition-opacity flex items-center gap-2"
+        >
+          <span class="material-icons text-sm">arrow_downward</span>
+          encode
+        </button>
+        <button
+          id="btn-clear-plain"
+          class="px-4 py-2 text-sm font-mono text-gray-500 hover:text-primary transition-colors"
+        >
+          clear
+        </button>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div class="flex items-center gap-2">
+        <span class="material-icons text-primary text-sm">terminal</span>
+        <h2 class="text-lg font-bold text-text-light dark:text-white">bottom text</h2>
+        <span class="text-xs font-mono text-gray-400">// output</span>
+      </div>
+      <textarea
+        id="bottom-output"
+        rows="8"
+        placeholder="sk..."
+        class="w-full p-4 font-mono text-sm bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg resize-y focus:outline-none focus:border-primary transition-colors text-text-light dark:text-text-dark placeholder:text-gray-400"
+      ></textarea>
+      <div class="flex gap-3 flex-wrap">
+        <button
+          id="btn-decode"
+          class="px-4 py-2 text-sm font-mono font-bold bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900 rounded hover:opacity-90 transition-opacity flex items-center gap-2"
+        >
+          <span class="material-icons text-sm">arrow_upward</span>
+          decode
+        </button>
+        <button
+          id="btn-copy"
+          class="px-4 py-2 text-sm font-mono text-gray-500 hover:text-primary transition-colors flex items-center gap-1"
+        >
+          <span class="material-icons text-sm">content_copy</span>
+          copy
+        </button>
+        <button
+          id="btn-clear-bottom"
+          class="px-4 py-2 text-sm font-mono text-gray-500 hover:text-primary transition-colors"
+        >
+          clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12 border-t border-dashed border-gray-300 dark:border-gray-700 pt-8">
+    <h3 class="text-sm font-mono font-bold text-gray-500 mb-3">
+      <span class="text-primary">//</span> how it works
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm font-mono text-gray-500">
+      <div class="p-4 border border-gray-200 dark:border-gray-800 rounded">
+        <span class="text-primary font-bold">1.</span>
+        Convert each character to its code point, then to
+        <span class="text-primary">base 9</span>.
+      </div>
+      <div class="p-4 border border-gray-200 dark:border-gray-800 rounded">
+        <span class="text-primary font-bold">2.</span>
+        Map digits <code>0-8</code> to home row keys:
+        <span class="text-primary">asdfghjkl</span>.
+      </div>
+      <div class="p-4 border border-gray-200 dark:border-gray-800 rounded">
+        <span class="text-primary font-bold">3.</span>
+        Break contiguous runs with non-home-row letters,
+        prefix with <code class="text-primary">sk</code>.
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  const HOME_ROW = "asdfghjkl";
+  const NON_HOME_ROW = "qwertyuiopzxcvbnm";
+  const DIGITS = 3;
+
+  function encode(input) {
+    if (!input) return "sk";
+
+    let encoded = "";
+    for (const char of input) {
+      let code = char.codePointAt(0) ?? 0;
+      let base9 = "";
+      if (code === 0) {
+        base9 = HOME_ROW[0];
+      } else {
+        while (code > 0) {
+          base9 = HOME_ROW[code % 9] + base9;
+          code = Math.floor(code / 9);
+        }
+      }
+      base9 = base9.padStart(DIGITS, HOME_ROW[0]);
+      encoded += base9;
+    }
+
+    let result = "";
+    let run = 0;
+    let prev = "";
+    for (let i = 0; i < encoded.length; i++) {
+      const ch = encoded[i];
+      if (ch === prev && HOME_ROW.includes(ch)) {
+        run++;
+        if (run === 2) {
+          result += NON_HOME_ROW[i % NON_HOME_ROW.length];
+          run = 0;
+        }
+      } else {
+        run = 0;
+        prev = ch;
+      }
+      result += ch;
+    }
+
+    return "sk" + result;
+  }
+
+  function decode(input) {
+    if (!input.startsWith("sk")) return "";
+
+    let filtered = "";
+    for (const ch of input.slice(2)) {
+      if (HOME_ROW.includes(ch)) {
+        filtered += ch;
+      }
+    }
+
+    if (filtered.length === 0) return "";
+
+    let result = "";
+    for (let i = 0; i < filtered.length; i += DIGITS) {
+      const chunk = filtered.slice(i, i + DIGITS);
+      if (chunk.length < DIGITS) break;
+
+      let code = 0;
+      for (const ch of chunk) {
+        code = code * 9 + HOME_ROW.indexOf(ch);
+      }
+      result += String.fromCodePoint(code);
+    }
+
+    return result;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const plainInput = document.getElementById("plain-input");
+    const bottomOutput = document.getElementById("bottom-output");
+    const btnEncode = document.getElementById("btn-encode");
+    const btnDecode = document.getElementById("btn-decode");
+    const btnCopy = document.getElementById("btn-copy");
+    const btnClearPlain = document.getElementById("btn-clear-plain");
+    const btnClearBottom = document.getElementById("btn-clear-bottom");
+
+    btnEncode?.addEventListener("click", () => {
+      const text = plainInput?.value ?? "";
+      if (bottomOutput) {
+        bottomOutput.value = encode(text);
+      }
+    });
+
+    btnDecode?.addEventListener("click", () => {
+      const text = bottomOutput?.value ?? "";
+      if (plainInput) {
+        plainInput.value = decode(text);
+      }
+    });
+
+    btnCopy?.addEventListener("click", async () => {
+      const text = bottomOutput?.value ?? "";
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        const icon = btnCopy?.querySelector(".material-icons");
+        if (icon) {
+          icon.textContent = "check";
+          setTimeout(() => {
+            icon.textContent = "content_copy";
+          }, 1500);
+        }
+      } catch {
+        bottomOutput?.select();
+      }
+    });
+
+    btnClearPlain?.addEventListener("click", () => {
+      if (plainInput) plainInput.value = "";
+    });
+
+    btnClearBottom?.addEventListener("click", () => {
+      if (bottomOutput) bottomOutput.value = "";
+    });
+
+    plainInput?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        if (bottomOutput) bottomOutput.value = encode(plainInput.value);
+      }
+    });
+  });
+</script>
